@@ -26,7 +26,7 @@ echo "init repo for $SERVERNAME"
 git init --bare $SERVERNAME.git
 
 # adding the default config
-mkdir tmp
+mkdir -p tmp
 git clone $SERVERNAME.git tmp/
 cd tmp
 
@@ -39,7 +39,8 @@ git commit -m "first commit"
 git push origin master
 
 # and cleanup of tmp stuff
-cd ~
+echo remoing temporary files
+cd $WORKDIR
 rm -rf tmp
 
 # -- handle keys and init on server --
