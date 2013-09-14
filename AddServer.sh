@@ -55,5 +55,20 @@ cat ./tmp/${SERVERNAME}_id_rsa.pub >> ./$SSH_auth_file
 
 echo copy scripts and keys to server
 cp /opt/ConfigScripts/UpdateConfig.sh tmp
-scp -r tmp $OLDNAME:.
-ssh $OLDNAME "sh tmp/UpdateConfig.sh"
+
+SCPCOMMAND="scp -r tmp $OLDNAME:."
+SSHCOMMAND="ssh $OLDNAME \"sh tmp/UpdateConfig.sh\""
+
+$SCPCOMMAND
+if [ $? ]; then
+	echo "Failed to run scp command."
+	echo "- login user ($OLDNAME) must be able to do passwordless login"
+	echo "- To this manually do the following"
+	echo "  $SCPCOMMAND"
+	echo "  $SSHCOMMAND"
+	exit 2
+fi
+
+$SSHCOMMAND
+echo all done
+

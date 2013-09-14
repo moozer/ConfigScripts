@@ -3,6 +3,12 @@
 CONFIGSERVER="configserver"
 KEYLOCATION="/etc/metaconfig/keys"
 
+if ! [ -d /etc/metaconfig ]; then
+	echo unable to find metaconfig installation.
+	echo please install it and rerun the script
+	exit 1
+fi
+
 echo "copying keys to $KEYLOCATION"
 mkdir -p $KEYLOCATION
 mv /home/sysuser/tmp/* $KEYLOCATION
