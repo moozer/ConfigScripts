@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ "$1" = "" ] || [ "$2" = "" ]; then
-	echo "Usage: $0 <old servername> <new servername>"
+	echo "Usage: $0 <old servername login> <new servername>"
 	exit 1 
 fi
 
@@ -12,7 +12,7 @@ DEFAULTCONFIGFILE="/opt/Metaconfig_mozrepo/mozrepo/default/config"
 WORKDIR="/home/gitconfig"
 
 echo adding $SERVERNAME to gitconfig repos
-echo - current servername is $1
+echo - login to current server is: $OLDNAME
 
 echo changing to $WORKDIR
 cd $WORKDIR
@@ -53,3 +53,7 @@ ssh-keygen -C metaconfig@$SERVERNAME -f ./tmp/${SERVERNAME}_id_rsa -N ""
 echo -n $SSH_prefix >> ./$SSH_auth_file
 cat ./tmp/${SERVERNAME}_id_rsa.pub >> ./$SSH_auth_file
 
+echo copy scripts and keys to server
+cp /opt/ConfigScripts/UpdateConfig.sh tmp
+scp -r tmp $OLDNAME:.
+ssh $OLDNAME "sh tmp/UpdateConfig.sh"
