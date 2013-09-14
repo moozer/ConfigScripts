@@ -9,9 +9,18 @@ fi
 SERVERNAME=$2
 OLDNAME=$1
 DEFAULTCONFIGFILE="/opt/Metaconfig_mozrepo/mozrepo/default/config"
+WORKDIR="/home/gitconfig"
 
 echo adding $SERVERNAME to gitconfig repos
 echo - current servername is $1
+
+echo changing to $WORKDIR
+cd $WORKDIR
+
+if [ -d $SERVERNAME.git ]; then
+	echo server already exists in repo: $SERVERNAME
+	exit 1
+fi
 
 echo "init repo for $SERVERNAME"
 git init --bare $SERVERNAME.git
