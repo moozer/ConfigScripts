@@ -9,13 +9,13 @@ if ! [ -d /etc/metaconfig ]; then
 	exit 1
 fi
 
-echo "copying keys to $KEYLOCATION"
-mkdir -p $KEYLOCATION
-mv /home/sysuser/tmp/* $KEYLOCATION
-chmod 700 $KEYLOCATION
-
 SERVERNAME=$(ls $KEYLOCATION/*.pub | sed 's#/.*/\(.*\)_id_rsa.pub#\1#')
 echo "updating metaconfig for $SERVERNAME"
+
+echo "copying keys to $KEYLOCATION"
+mkdir -p $KEYLOCATION
+mv /home/sysuser/tmp/$SERVERNAME* $KEYLOCATION
+chmod 700 $KEYLOCATION
 
 # Ændre ssh config
 cat >> /root/.ssh/config << EOF
@@ -27,6 +27,11 @@ EOF
 
 cd /etc/metaconfig
 git clone gitconfig@$CONFIGSERVER:$SERVERNAME.git
+if [ ! $? = "0" ]; then
+	echo "something went wrong cloning from $CONFIGSERVER"
+	exit 1
+fi
+
 rm -rf node
 ln --symbolic $SERVERNAME node
 
