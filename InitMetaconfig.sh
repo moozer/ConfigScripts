@@ -20,33 +20,44 @@ fi;
 # fra
 # http://metaconfig.com/download/
 
-
+echo "Installing metaconfig repos"
 wget -O- http://bootstrap.sikkerhed.org/sikkerhedorg.pub 2> /dev/null | apt-key add -
 echo "deb http://debian.sikkerhed.org/ stable main" > /etc/apt/sources.list.d/metaconfig.list
-apt-get update
+apt-get update > /dev/null
 
-apt-get dist-upgrade -y
+echo "Upgrading entire system"
+apt-get dist-upgrade -y > /dev/null
 
 # Under /opt/metaconfig lægger vi data
-apt-get -y install git
+
+echo "retrieving git repos"
+apt-get -y install git git-svn
 mkdir -p opt
 cd /opt
-git clone git://gitserver/Metaconfig_mozrepo.git
-git clone git://gitserver/Metaconfig-base.git
+if [ ! -e Metaconfig_mozrepo ]; then
+	git clone git://gitserver/Metaconfig_mozrepo.git
+fi
+if [ ! -e Metaconfig_public ]; then
+	git svn clone https://svn.sikkerhed.org/svn/config/projects/metaconfig/public Metaconfig_public
+fi
 
 # metaconfig part
-apt-get -y install metaconfig
+echo Installing metaconfig
+apt-get -y install metaconfig > /dev/null
 
 cd /etc/metaconfig/res
 if [ ! -e mozrepo ]; then
 	ln --symbolic /opt/Metaconfig_mozrepo/mozrepo/ .
 fi
 if [ ! -e public ]; then
-	ln --symbolic /opt/Metaconfig-base/public/ .
+	ln --symbolic /opt/Metaconfig_public/ public
 fi
 cd /etc/metaconfig/node
 if [ ! -e config ]; then
-	ln --symbolic ../res/mozrepo/default/config .
+	cp ../res/mozrepo/default/config .
+	nano config
+else
+	echo "Keeping existing config file"
 fi
 
 # to avoid certain issues...
