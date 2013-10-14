@@ -65,10 +65,13 @@ fi
 apt-get -y install zsh
 
 # and update everything
+rm /etc/apt/sources.list
 metaconfig -aa
 #dpkg-reconfigure -a -u
 
 echo "if you have errors"
+echo " run the command again"
+echo "if they persist"
 echo " dpkg-reconfigure <pkg> to reconfigure a package"
 echo " apt-get install --reinstall <pkg> to reinstall if reconfigure does not work"
 echo "we have changed a lot, please reboot"
