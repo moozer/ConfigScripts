@@ -47,7 +47,7 @@ apt-get -y install metaconfig > /dev/null
 
 cd /etc/metaconfig/res
 if [ ! -e mozrepo ]; then
-	ln --symbolic /opt/Metaconfig_mozpublic mozrepo 
+	ln --symbolic /opt/Metaconfig_mozpublic/ mozrepo 
 fi
 if [ ! -e public ]; then
 	ln --symbolic /opt/Metaconfig_public/ public
