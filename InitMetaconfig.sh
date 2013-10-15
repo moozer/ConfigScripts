@@ -35,7 +35,7 @@ apt-get -y install git git-svn
 mkdir -p opt
 cd /opt
 if [ ! -e Metaconfig_mozrepo ]; then
-	git clone git://gitserver/Metaconfig_mozrepo.git
+	git clone https://github.com/moozer/Metaconfig_mozpublic.git
 fi
 if [ ! -e Metaconfig_public ]; then
 	git svn clone https://svn.sikkerhed.org/svn/config/projects/metaconfig/public Metaconfig_public
@@ -47,7 +47,7 @@ apt-get -y install metaconfig > /dev/null
 
 cd /etc/metaconfig/res
 if [ ! -e mozrepo ]; then
-	ln --symbolic /opt/Metaconfig_mozrepo/mozrepo/ .
+	ln --symbolic /opt/Metaconfig_mozpublic mozrepo 
 fi
 if [ ! -e public ]; then
 	ln --symbolic /opt/Metaconfig_public/ public
@@ -67,7 +67,6 @@ apt-get -y install zsh
 # and update everything
 rm /etc/apt/sources.list
 metaconfig -aa
-#dpkg-reconfigure -a -u
 
 echo "if you have errors"
 echo " run the command again"
@@ -77,10 +76,6 @@ echo " apt-get install --reinstall <pkg> to reinstall if reconfigure does not wo
 echo "we have changed a lot, please reboot"
 echo "  reboot"
 
-# den blev åbenbart ikke helt færdig
-#metaconfig -aa
-#dpkg --reconfigure -a
-#apt-get --reinstall install lftp
-#metaconfig -aa
+
 
 
