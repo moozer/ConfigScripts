@@ -11,6 +11,7 @@ import sys, os
 from subprocess import call
 
 # user and permissions are passed from authorized_keys
+print >>sys.stderr, "Config storage welcomes you :-)""
 
 # handle cmd line
 user = sys.argv[1]
@@ -18,6 +19,7 @@ permissions = sys.argv[2]
 command = os.environ['SSH_ORIGINAL_COMMAND']
 
 if not user or not permissions or not command:
+    print >>sys.stderr, "Wrong user, command or permissions"
     sys.exit( 1 )
 
 # check the supplied command contains a valid git action 
